@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prashanth G | Software Engineer</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+:root{
+--bg:#050505;
+--card:#0e0e0e;
+--neon:#00f3ff;
+--purple:#7a00ff;
+--text:#ffffff;
+--dim:#9a9a9a;
+--border:rgba(255,255,255,.08);
+}
+
+*{margin:0;padding:0;box-sizing:border-box; cursor: none;} /* Hide default cursor for custom one */
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+section{padding:140px 8%;position:relative}
+h1,h2,h3{font-family:'Syne',sans-serif}
+
+/* ===== Custom Cursor ===== */
+#cursor {
+    width: 20px;
+    height: 20px;
+    background: var(--neon);
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 99999;
+    mix-blend-mode: difference;
+    transition: transform 0.1s ease-out;
+}
+
+#cursor-follower {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--neon);
+    border-radius: 50%;
+    position: fixed;
+    top: -10px;
+    left: -10px;
+    pointer-events: none;
+    z-index: 99998;
+    transition: transform 0.15s ease-out, background 0.3s;
+}
+
+/* ===== Scroll Progress Bar ===== */
+.progress-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    z-index: 10000;
+}
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(to right, var(--purple), var(--neon));
+    width: 0%;
+}
+
+/* ===== Loading Screen ===== */
+#loader{
+position:fixed;
+inset:0;
+background:#000;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+flex-direction:column;
+}
+.loader-text{
+font-size:1.2rem;
+letter-spacing:4px;
+color:var(--neon);
+animation:pulse 1.2s infinite alternate;
+}
+@keyframes pulse{from{opacity:.3}to{opacity:1}}
+
+/* ===== Hero ===== */
+.hero{height:100vh;display:flex;flex-direction:column;justify-content:center}
+.hero h1{
+font-size:clamp(4rem,10vw,10rem);
+line-height:.9;
+background:linear-gradient(180deg,#fff 30%,var(--neon));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+.hero p{margin-top:25px;color:var(--dim);font-size:1.2rem;max-width:700px}
+.cta-buttons{margin-top:30px}
+.btn{
+display:inline-block;
+padding:14px 30px;
+border-radius:30px;
+margin-right:15px;
+text-decoration:none;
+font-weight:600;
+transition:.4s;
+border:1px solid var(--neon);
+color:var(--neon);
+position: relative;
+overflow: hidden;
+}
+.btn:hover{background:var(--neon);color:#000; transform: scale(1.05);}
+
+/* ===== Sections ===== */
+.section-header{margin-bottom:80px}
+.section-header h2{font-size:3rem;text-transform:uppercase}
+.section-header span{color:var(--neon)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:40px}
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 50px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: border-color 0.3s;
+}
+.card:hover { border-color: var(--neon); }
+
+.card h3{margin-bottom:15px;color:var(--neon); pointer-events: none;}
+.card p{color:var(--dim);margin-bottom:15px; pointer-events: none;}
+.metric{color:#fff;font-weight:600}
+.tag{display:inline-block;background:var(--purple);padding:6px 14px;border-radius:30px;font-size:.8rem;margin:5px 6px 0 0}
+.github-link{display:inline-block;margin-top:15px;color:var(--neon);text-decoration:none;font-weight:600}
+
+/* ===== Timeline ===== */
+.timeline{position:relative;margin-top:60px}
+.timeline:before{content:"";position:absolute;left:50%;top:0;width:2px;height:100%;background:var(--border)}
+.timeline-item{width:50%;padding:40px 60px;position:relative}
+.timeline-item:nth-child(odd){left:0;text-align:right}
+.timeline-item:nth-child(even){left:50%}
+.timeline-item:before{content:"";position:absolute;top:50px;width:14px;height:14px;border-radius:50%;background:var(--neon);box-shadow:0 0 20px var(--neon)}
+.timeline-item:nth-child(odd):before{right:-7px}
+.timeline-item:nth-child(even):before{left:-7px}
+.timeline-item h4{color:var(--neon);margin-bottom:10px}
+
+/* ===== Footer ===== */
+footer{padding:140px 8%;background:#0a0a0a;text-align:center}
+footer h2{font-size:3rem;margin-bottom:20px}
+.contact-link{display:block;margin:12px 0;color:var(--dim);text-decoration:none;font-size:1.1rem}
+.contact-link:hover{color:var(--neon)}
+
+@media(max-width:900px){
+    *{cursor: auto;}
+    #cursor, #cursor-follower {display: none;}
+    .timeline:before{left:0}
+    .timeline-item,.timeline-item:nth-child(even),.timeline-item:nth-child(odd){width:100%;left:0;text-align:left;padding-left:60px}
+    .timeline-item:before{left:0}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-follower"></div>
+
+<div class="progress-wrap">
+    <div class="progress-bar"></div>
+</div>
+
+<div id="loader">
+    <div class="loader-text">INITIALIZING PORTFOLIO...</div>
+</div>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>PRASHANTH G</h1>
+        <p>
+            Software Engineer focused on building <strong>scalable systems</strong>, optimizing performance,
+            and crafting immersive digital experiences. Passionate about solving complex problems.
+        </p>
+        <div class="cta-buttons">
+            <a href="/resume.pdf" class="btn" download>Download Resume</a>
+            <a href="https://github.com/yourusername" target="_blank" class="btn">GitHub</a>
+        </div>
+    </div>
+</section>
+
+<section id="projects">
+    <div class="section-header"><h2>Selected <span>Case Studies</span></h2></div>
+    <div class="grid">
+        <div class="card" data-tilt>
+            <h3>Internet Download Manager</h3>
+            <p>Built a multi-threaded Java downloader with segmentation & resume functionality.</p>
+            <p>Impact: <span class="metric">40% faster speeds</span></p>
+            <span class="tag">JAVA</span><span class="tag">MULTITHREADING</span>
+            <br><a href="#" class="github-link">View Project →</a>
+        </div>
+
+        <div class="card" data-tilt>
+            <h3>Book Recommendation Engine</h3>
+            <p>Developed ML-based recommendation system using Flask & collaborative filtering.</p>
+            <p>Impact: <span class="metric">30% Accuracy</span></p>
+            <span class="tag">PYTHON</span><span class="tag">FLASK</span><span class="tag">ML</span>
+            <br><a href="#" class="github-link">View Project →</a>
+        </div>
+
+        <div class="card" data-tilt>
+            <h3>Scup Ice Website</h3>
+            <p>Built responsive UI with modern CSS & JS interactions for product showcase.</p>
+            <p>Impact: <span class="metric">Reduced bounce 25%</span></p>
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span>
+            <br><a href="#" class="github-link">View Project →</a>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="section-header"><h2>Education <span>Journey</span></h2></div>
+    <div class="timeline">
+        <div class="timeline-item"><h4>2020</h4><p>SSLC – New Brilliant’s School (91.36%)</p></div>
+        <div class="timeline-item"><h4>2022</h4><p>PUC – Vidyapana International College (92%)</p></div>
+        <div class="timeline-item"><h4>2026</h4><p>B.E CSE – New Horizon College of Engineering (CGPA 8.38)</p></div>
+    </div>
+</section>
+
+<footer>
+    <h2>Let’s Build Something Powerful</h2>
+    <a href="mailto:samsonsam656565@gmail.com" class="contact-link">samsonsam656565@gmail.com</a>
+    <a href="https://www.linkedin.com/in/prashanth-g-923159364" target="_blank" class="contact-link">LinkedIn</a>
+</footer>
+
+<canvas id="snow-canvas"></canvas>
+
+<script>
+window.addEventListener('load', () => {
+    // 1. Hide Loader
+    gsap.to('#loader', { opacity: 0, duration: 1, onComplete: () => {
+        document.getElementById('loader').style.display = 'none';
+    }});
+
+    // 2. Custom Cursor Logic
+    const cursor = document.getElementById('cursor');
+    const follower = document.getElementById('cursor-follower');
+    
+    window.addEventListener('mousemove', (e) => {
+        gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+        gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.3 });
+    });
+
+    // Cursor hover effects
+    const links = document.querySelectorAll('a, .btn, .card');
+    links.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            gsap.to(cursor, { scale: 2, background: 'transparent', border: '1px solid #00f3ff' });
+            gsap.to(follower, { scale: 1.5, background: 'rgba(0, 243, 255, 0.1)' });
+        });
+        link.addEventListener('mouseleave', () => {
+            gsap.to(cursor, { scale: 1, background: '#00f3ff' });
+            gsap.to(follower, { scale: 1, background: 'transparent' });
+        });
+    });
+
+    // 3. Scroll Progress Bar
+    gsap.to('.progress-bar', {
+        width: '100%',
+        ease: 'none',
+        scrollTrigger: {
+            scrub: 0.3,
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom"
+        }
+    });
+
+    // 4. Section Scroll Animations
+    const sections = document.querySelectorAll('section');
+    sections.forEach(sec => {
+        gsap.from(sec.querySelectorAll('h1, h2, p, .card, .timeline-item'), {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            stagger: 0.2,
+            scrollTrigger: {
+                trigger: sec,
+                start: 'top 75%',
+            }
+        });
+    });
+
+    // 5. Card Mouse Interaction (Tilt Effect)
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+
+            gsap.to(card, {
+                rotateX: rotateX,
+                rotateY: rotateY,
+                duration: 0.5,
+                ease: 'power2.out'
+            });
+        });
+
+        card.addEventListener('mouseleave', () => {
+            gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.5 });
+        });
+    });
+});
+
+// Snow Animation remains as background
+const snowCanvas = document.getElementById('snow-canvas');
+const snowCtx = snowCanvas.getContext('2d');
+function resizeSnow(){ snowCanvas.width = window.innerWidth; snowCanvas.height = window.innerHeight; }
+resizeSnow();
+window.addEventListener('resize', resizeSnow);
+snowCanvas.style.position = 'fixed'; snowCanvas.style.top = 0; snowCanvas.style.left = 0;
+snowCanvas.style.pointerEvents = 'none'; snowCanvas.style.zIndex = -1;
+const snowflakes = [];
+for(let i=0;i<120;i++){ snowflakes.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, r: Math.random()*2+1, speed: Math.random()*1+0.5 }); }
+function animateSnow(){
+    snowCtx.clearRect(0,0,snowCanvas.width,snowCanvas.height);
+    snowCtx.fillStyle = "rgba(255,255,255,0.3)";
+    snowCtx.beginPath();
+    snowflakes.forEach(f=>{
+        snowCtx.moveTo(f.x,f.y);
+        snowCtx.arc(f.x,f.y,f.r,0,Math.PI*2);
+        f.y += f.speed;
+        if(f.y > snowCanvas.height) f.y = 0;
+    });
+    snowCtx.fill();
+    requestAnimationFrame(animateSnow);
+}
+animateSnow();
+</script>
+
+</body>
+</html>
